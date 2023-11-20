@@ -10,7 +10,7 @@ I share here what I put together to get it running in a Windows environment, it 
 
 ## Installation of various modules
 
-- Python 3 has to be installed on the targer machine
+- Python 3 has to be installed on the target machine
 - Install [pyspacemouse](https://pypi.org/project/pyspacemouse/) Python library as described in the related page
 - Create a folder where spaceMouse.py shall be copied
 - As it is explained, there is no need to install any specific driver, as far as Windows goes just copy hidapi.dll in a folder inside the spaceMouse.py folder. Doing so you will not run into headaches to make the dll recognized when the python program references it.
