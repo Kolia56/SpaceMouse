@@ -37,4 +37,6 @@ python "C:\Users\yourfolder\spacemouseHA.py"
   - Create a card in order to display the helpers
   - And the automation that will process MQTT data
 
-As a test, spaceMouse.py may be started manually to see how things are going. Acting on the various control buttons should make the various helpers changing. In order to adapt the mouvement to your likingd, you may change some constants in spacemouse.py
+As a test, spaceMouse.py may be started manually to see how things are going. Acting on the various control buttons should make the various helpers changing. In order to adapt the mouvement to your likingd, you may change some constants in spacemouse.py.
+
+Min and max value of the various helpers are specific to my setup they need to be changed depending on each scenario. It may be found that the device is too sensitive, don't hesitate to play with various constant especially in the python module. 
