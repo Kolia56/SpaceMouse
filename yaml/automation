@@ -1,1 +1,179 @@
+automation:
+  - id: a6990225-349c-4faf-82d3-cf3d5d7321e9
+    # t event time
+    # x position on the plan
+    # y position on the plan
+    # z push on the bouton [0,-1]
+    # roll left / right [-1, 1]
+    # pitch forward / backward [-1, 1]
+    # yaw rotation left / right [-1, 1]  
+    # left button
+    # right button
+    alias: Space mouse
+    description: ""
+    trace:
+      stored_traces: 80
+    trigger:
+    - platform: mqtt
+      topic: spacemouse/data/#
+      id: controller
+      variables:
+        yaw: >
+          {% if trigger.payload_json.yaw  | float() | abs > 0.3 %}
+            {{(trigger.payload_json.yaw  | float() | multiply (2) | round() ) | multiply (0.5) }}
+          {% else %}
+            0
+          {% endif %}
+        roll: >
+          {% if trigger.payload_json.roll | float() | abs > 0.3 %}
+            {{(trigger.payload_json.roll  | float() | multiply (2) | round() ) | multiply (0.5) }}
+          {% else %}
+            0
+          {% endif %}
+        pitch: >
+          {% if trigger.payload_json.pitch  | float() | abs > 0.3 %}
+            {{(trigger.payload_json.pitch  | float() | multiply (2) | round() ) | multiply (0.5) }}
+          {% else %}
+            0
+          {% endif %}
+        z: >
+          {% if trigger.payload_json.z  | float() | abs > 0.4 %}
+            {{(trigger.payload_json.z  | float() | multiply (2) | round() ) | multiply (0.5) }}
+          {% else %}
+            0
+          {% endif %}
+        newvalue_yaw:   '{{ states("input_number.space_mouse_volume") | float() + yaw }}'
+        newvalue_roll:  '{{ states("input_number.space_mouse_subwoofer") | float() + roll}}'
+        newvalue_pitch: '{{ states("input_number.space_mouse_center") | float() + pitch }}'
+        newvalue_z: '{{ z | abs }}'
+
+    - platform: mqtt
+      topic: spacemouse/buttons/#
+      id: buttons
+      variables:
+        button_left: '{{trigger.payload_json.button_left}}'
+        button_right: '{{trigger.payload_json.button_right}}'
+    action:
+      - choose:
+          - conditions:
+              - condition: trigger
+                id: controller
+            sequence:
+              # - condition: template
+              #   value_template: "{{ yaw != 99 }}"
+              - service: input_number.set_value
+                data:
+                  value: >
+                    {% if yaw != 99 %}
+                      {% if newvalue_yaw > -70 and newvalue_yaw <= 5 and trigger.payload_json.yaw | float() | abs >= 0 %}
+                        {{newvalue_yaw}}
+                      {% elif newvalue_yaw >= 5 %}
+                        5
+                      {% elif newvalue_yaw <= -70 %}
+                        -70
+                      {% endif %}
+                    {% else %}
+                      {{states("input_number.space_mouse_volume")}}
+                    {% endif %}
+                target:
+                  entity_id: input_number.space_mouse_volume
+              - service: input_number.set_value
+                data:
+                  value: >
+                    {% if yaw != 99 %}
+                      {% if newvalue_roll >= -16 and newvalue_roll <= 16 and trigger.payload_json.roll | float(1) | abs >= 0 %}
+                        {{newvalue_roll}}
+                      {% elif newvalue_roll >= 16 %}
+                        16
+                      {% elif newvalue_roll <= -8 %}
+                        -16
+                      {% endif %}
+                    {% else %}
+                      {{states("input_number.space_mouse_subwoofer")}}
+                    {% endif %}
+                target:
+                  entity_id: input_number.space_mouse_subwoofer
+              - service: input_number.set_value
+                data:
+                  value: >
+                    {% if yaw != 99 %}
+                      {% if newvalue_pitch >= -16 and newvalue_pitch <= 16 and trigger.payload_json.pitch | float(1) | abs >= 0 %}
+                        {{newvalue_pitch}}
+                      {% elif newvalue_pitch >= 16 %}
+                        16
+                      {% elif newvalue_pitch <= -16 %}
+                        -16
+                      {% endif %} 
+                    {% else %}
+                      {{states("input_number.space_mouse_center")}}
+                    {% endif %}        
+                target:
+                  entity_id: input_number.space_mouse_center
+              - service: input_number.set_value
+                data:
+                  value: '{{newvalue_z}}'
+                target:
+                  entity_id: input_number.space_mouse_z
+              - if:
+                  - condition: template
+                    value_template: "{{ newvalue_z == 0.5 }}"
+                then:
+                  - service: input_number.set_value
+                    data:
+                      entity_id:
+                        - input_number.space_mouse_subwoofer
+                        - input_number.space_mouse_center
+                      value: 0
+                  - service: input_number.set_value
+                    data:
+                      entity_id: input_number.space_mouse_volume
+                      value: -15  
+          - conditions:
+              - condition: trigger
+                id: buttons
+              - condition: template
+                value_template: '{{button_left == 1}}'
+            sequence:
+                service: input_boolean.toggle
+                target:
+                  entity_id: input_boolean.space_mouse_pause
+          - conditions:
+              - condition: trigger
+                id: buttons
+              - condition: template
+                value_template: '{{button_right == 1}}'
+            sequence:
+                service: input_boolean.toggle
+                target:
+                  entity_id: input_boolean.space_mouse_button1
+
+
+
+# - service: notify.space_mouse_log
+#   data:
+#     message: "{{ now().isoformat() }} - pitch: {{newvalue_pitch}} - yaw: {{newvalue_yaw}}" 
+
+# - service: input_number.set_value
+#   data:
+#     value: >
+#       {% if newvalue_z >= 0 and newvalue_z <= 100 and trigger.payload_json.z | float(1) != 0 %}
+#         {{newvalue_z}}
+#       {% endif %}
+#       {% elif newvalue_z >= 100 %}
+#         100
+#       {% elif newvalue_z <= 0 %}
+#         0
+#       {% endif %}
+#   target:
+#     entity_id: input_number.space_mouse_z
+
+# {% set val = states("input_number.space_mouse_volume") | int() + (trigger.payload_json.yaw | int()) %}
+
+# data:
+#   entity_id: '{{ entity }}'
+#   value: '{% set v_pct = trigger.payload_json | int / 100 %} {{ iif (
+#     entity == ''input_number.idx619'', ((v_pct * 75) - 70), ((v_pct * 32) - 16)
+#     ) | round(0) }}'
+    mode: queued
+    max: 100
 
