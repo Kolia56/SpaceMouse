@@ -26,7 +26,7 @@ import pyspacemouse
 from paho.mqtt import client as mqtt_client
 import time
 
-broker = '192.168.21.110'
+broker = 'xxx.xxx.xxx.xxx'
 port = 1883
 client_id = 'b91ea0a9-e0f1-425d-b70d-2c560457367f'# f'python-mqtt-{random.randint(0, 1000)}'
 topic = "spacemouse/"
