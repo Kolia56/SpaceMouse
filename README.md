@@ -1,4 +1,4 @@
-# Integrate SpaceMouse at Home Assistant
+# SpaceMouse driving Home Assistant controls
 
 I've been looking for quite some time for a physical device that could easyly change various volumes controls of a large 7.1 home theater installation 
 as Main volume, Center volume, SubWoofer for instance. Using phone or tablet is definitely not as handy.
