@@ -1,0 +1,6 @@
+type: entities
+entities:
+  - entity: input_number.space_mouse_volume
+  - entity: input_number.space_mouse_subwoofer
+  - entity: input_number.space_mouse_center
+  - entity: input_number.space_mouse_z
