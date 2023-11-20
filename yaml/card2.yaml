@@ -1,1 +1,24 @@
+# numberbox-card needs to be installed first preferably using HACS
+type: entities
+entities:
+  - entity: input_number.space_mouse_volume
+    type: custom:numberbox-card
+    border: true
+    unit: ' dB'
+    step: 0.5
+  - entity: input_number.space_mouse_center
+    type: custom:numberbox-card
+    border: true
+    unit: ' dB'
+    step: 1
+  - entity: input_number.space_mouse_subwoofer
+    type: custom:numberbox-card
+    border: true
+    unit: ' dB'
+    step: 0.5
+  - entity: input_number.space_mouse_z
+    type: custom:numberbox-card
+    border: true
+    unit: ' dB'
+    step: 0.5
 
