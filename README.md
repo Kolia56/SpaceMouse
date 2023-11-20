@@ -13,7 +13,7 @@ I share here what I put together to get it running in a Windows environment, it 
 - Python 3 has to be installed on the target machine
 - Install [pyspacemouse](https://pypi.org/project/pyspacemouse/) Python library as described in the related page
 - Create a folder where spaceMouse.py shall be copied
-- As it is explained, there is no need to install any specific driver, as far as Windows goes just copy hidapi.dll in a folder inside the spaceMouse.py folder. Doing so you will not run into headaches to make the dll recognized when the python program references it.
+- As it is explained, there is no need to install any specific driver, as far as Windows goes just copy hidapi stuff in a folder inside the spaceMouse.py folder. Doing so you will not run into headaches to make the dll recognized when the python program references it.
 - Install easyhid as instructed
 - Make sure you have a MQTT broker running. There are plenty of tutorials, I won't detail here how to do it. I've been running a Mosquito broker for several years now on a separete RPi3B with any hiccup.
 - Install [paho-MQTT](https://pypi.org/project/paho-mqtt/) which is the python MQTT library
@@ -37,6 +37,6 @@ python "C:\Users\yourfolder\spacemouseHA.py"
   - Create a card in order to display the helpers
   - And the automation that will process MQTT data
 
-As a test, spaceMouse.py may be started manually to see how things are going. Acting on the various control buttons should make the various helpers changing. In order to adapt the mouvement to your likingd, you may change some constants in spacemouse.py.
+As a test, spaceMouse.py may be started manually to see how things are going. Acting on the various control buttons should make the various helpers changing. In order to adapt the mouvement to your liking, you may change some constants in spacemouse.py.
 
 Min and max value of the various helpers are specific to my setup they need to be changed depending on each scenario. It may be found that the device is too sensitive, don't hesitate to play with various constant especially in the python module. 
