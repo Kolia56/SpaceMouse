@@ -15,7 +15,7 @@ I share here what I put together to get it running in a Windows environment, it 
 - Create a folder where spaceMouse.py shall be copied
 - As it is explained, there is no need to install any specific driver, as far as Windows goes just copy hidapi stuff in a folder inside the spaceMouse.py folder. Doing so you will not run into headaches to make the dll recognized when the python program references it.
 - Install easyhid as instructed
-- Make sure you have a MQTT broker running. There are plenty of tutorials, I won't detail here how to do it. I've been running a Mosquito broker for several years now on a separete RPi3B with any hiccup.
+- Make sure you have a MQTT broker running. There are plenty of tutorials, I won't detail here how to do it. I've been running a Mosquito broker for several years now on a separete RPi3B without any hiccup.
 - Install [paho-MQTT](https://pypi.org/project/paho-mqtt/) which is the python MQTT library
 - Modify spaceMouse.py MQTT broker parameters depending on your specific setup
 - Depending on the exact device used, it may be needed to modify the open call. I did many tries before to find the correct one.
